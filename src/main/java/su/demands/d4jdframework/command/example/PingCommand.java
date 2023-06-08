@@ -9,9 +9,9 @@ import su.demands.d4jdframework.command.annotation.CommandHandler;
 import su.demands.d4jdframework.command.annotation.SubcommandHandler;
 import su.demands.d4jdframework.command.executor.Executor;
 
-public class CommandPing extends Command {
+public class PingCommand extends Command {
 
-    public CommandPing(DiscordClient client) {
+    public PingCommand(DiscordClient client) {
         super(client,"ping");
     }
 
@@ -20,13 +20,16 @@ public class CommandPing extends Command {
     @CommandArgument(name = "input\uD835\uDEA12", description = "maybe ping ?")
     public Publisher<?> execute(Executor executor, String... arg) {
         val event = executor.chatInputInteractionEvent();
-        if (arg.length > 0)
+        if (arg.length == 1)
             if (arg[0].toLowerCase().contains("pong"))
                 return event.reply("Ping!");
             else if (arg[0].toLowerCase().contains("ping"))
                 return event.reply("Ping\nPong!");
             else
                 return event.reply("What should i answer?");
+        if (arg.length == 2)
+            if (arg[0].toLowerCase().contains("ping") && arg[1].toLowerCase().contains("ping"))
+                return  event.reply("Pong\nPong!");
         return event.reply("Pong!");
     }
 
