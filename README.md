@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.github.Demandss:d4j-dframework:0.0.1-SNAPSHOT'
+  implementation 'com.github.Demandss:d4j-dframework:master-SNAPSHOT'
 }
 ```
 
@@ -43,7 +43,7 @@ dependencies {
   <dependency>
     <groupId>com.github.demandss</groupId>
     <artifactId>d4j-dframework</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>master-SNAPSHOT</version>
   </dependency>
 </dependencies>
 ```
