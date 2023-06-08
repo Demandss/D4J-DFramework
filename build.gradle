@@ -1,0 +1,96 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+group = 'su.demands'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+}
+
+dependencies {
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+
+    api 'org.jetbrains:annotations:24.0.0'
+
+    api 'ch.qos.logback:logback-classic:1.2.9'
+
+    api 'com.discord4j:discord4j-core:3.3.0-SNAPSHOT'
+    api 'com.discord4j:discord4j-oauth2:3.3.0-SNAPSHOT'
+}
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 60, 'seconds'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.incremental = true
+    sourceCompatibility = "16"
+    targetCompatibility = "16"
+}
+
+tasks.withType(Javadoc).all {
+    enabled = false
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifactId = 'd4j-dframework'
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = 'D4J-DFramework'
+                description = 'A JVM-based Discord4J wrapper for the official Discord Bot API'
+                url = 'https://github.com/Demandss/D4J-DFramework'
+                issueManagement {
+                    system = 'GitHub'
+                    url = 'https://github.com/Demandss/D4J-DFramework/issues'
+                }
+                licenses {
+                    license {
+                        name = 'LGPL-3.0'
+                        url = 'https://github.com/Demandss/D4J-DFramework/blob/master/LICENSE.md'
+                        distribution = 'repo'
+                    }
+                }
+                developers {
+                    developer {
+                        name = 'Demands'
+                    }
+                }
+                scm {
+                    url = 'https://github.com/Demandss/D4J-DFramework/'
+                    connection = 'scm:git:git://Demandss/D4J-DFramework.git'
+                    developerConnection = 'scm:git:ssh://Demandss/D4J-DFramework.git'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url = layout.buildDirectory.dir('repos/snapshots')
+        }
+    }
+}
+
+wrapper {
+    distributionType = Wrapper.DistributionType.ALL
+}
