@@ -26,7 +26,7 @@ public abstract class Command extends CommandBase {
     private final Logger LOGGER = LoggerFactory.getLogger(Command.class);
 
     @Getter @Setter
-    private boolean isGlobalCommand;
+    private boolean isGlobalCommand = true;
 
     @Getter @Setter
     private long guildId;
