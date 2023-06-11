@@ -5,6 +5,8 @@ import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.interaction.ChatInputInteractionEvent;
 import discord4j.discordjson.json.ApplicationCommandOptionData;
 import discord4j.discordjson.json.ApplicationCommandRequest;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.val;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -22,6 +24,12 @@ import java.util.List;
 
 public abstract class Command extends CommandBase {
     private final Logger LOGGER = LoggerFactory.getLogger(Command.class);
+
+    @Getter @Setter
+    private boolean isGlobalCommand;
+
+    @Getter @Setter
+    private long guildId;
 
     public Command(@NotNull DiscordClient client, String label, String... aliases) {
         super(client, label, aliases);
@@ -61,11 +69,19 @@ public abstract class Command extends CommandBase {
                     .addAllOptions(options)
                     .build();
 
-            client.getApplicationService()
-                    .createGlobalApplicationCommand(getApplicationId(),greetCmdRequest)
-                    .doOnNext(cmd -> LOGGER.debug("Successfully registered Global Command :: {}", cmd.name()))
-                    .doOnError(e -> LOGGER.error("Failed to register global commands :: {}", e.getMessage()))
-                   .subscribe();
+            if (isGlobalCommand) {
+                client.getApplicationService()
+                        .createGlobalApplicationCommand(getApplicationId(),greetCmdRequest)
+                        .doOnNext(cmd -> LOGGER.debug("Successfully registered Global Command :: {}", cmd.name()))
+                        .doOnError(e -> LOGGER.error("Failed to register global commands :: {}", e.getMessage()))
+                        .subscribe();
+            } else {
+                client.getApplicationService()
+                        .createGuildApplicationCommand(getApplicationId(),guildId,greetCmdRequest)
+                        .doOnNext(cmd -> LOGGER.debug("Successfully registered for Guild :: {} Command :: {}", guildId, cmd.name()))
+                        .doOnError(e -> LOGGER.error("Failed to register global commands :: {}", e.getMessage()))
+                        .subscribe();
+            }
         }
 
         GatewayDiscordClient gatewayClient = client.login().block();

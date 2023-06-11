@@ -22,6 +22,7 @@ import su.demands.d4jdframework.command.executor.Executor;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 public abstract class CommandBase {
 
