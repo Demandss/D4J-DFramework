@@ -75,6 +75,7 @@ public abstract class CommandBase {
         if (handle.get() == this)
         {
             List<Object> args = new ArrayList<>(Collections.emptyList());
+
             options.forEach(option -> args.add(option.getValue()
                     .map(ApplicationCommandInteractionOptionValue::asString)
                     .orElse("")));
