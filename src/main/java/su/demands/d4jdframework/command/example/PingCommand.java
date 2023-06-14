@@ -14,9 +14,6 @@ public class PingCommand extends Command {
 
     public PingCommand(DiscordClient client) {
         super(client,"ping");
-
-        setGlobalCommand(false);
-        setGuildId(854773322536583169L);
     }
 
     @CommandHandler(description = "this is ping command ¯\\_(ツ)_/¯")
