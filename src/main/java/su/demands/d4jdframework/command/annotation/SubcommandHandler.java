@@ -10,5 +10,4 @@ import java.lang.annotation.Target;
 public @interface SubcommandHandler {
     String[] value(); // Aliases
     String description() default "no description";
-    boolean isRequired() default false;
 }

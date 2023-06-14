@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'su.demands'
-version = '0.0.1-SNAPSHOT'
+version = '0.2.5-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -20,6 +20,8 @@ dependencies {
     api 'ch.qos.logback:logback-classic:1.2.9'
 
     api 'com.discord4j:discord4j-core:3.3.0-SNAPSHOT'
+
+    implementation 'com.github.drapostolos:type-parser:0.8.1'
 }
 
 configurations.all {
@@ -33,9 +35,9 @@ tasks.withType(JavaCompile) {
     targetCompatibility = "16"
 }
 
-tasks.withType(Javadoc).all {
+/*tasks.withType(Javadoc).all {
     enabled = false
-}
+}*/
 
 java {
     withSourcesJar()

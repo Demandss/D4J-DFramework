@@ -4,12 +4,27 @@ import discord4j.core.object.command.ApplicationCommandOption;
 
 import java.lang.annotation.*;
 
-@Repeatable(CommandArguments.class)
+@Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
 public @interface CommandArgument {
-    String name();
+
+    /**
+     * Display name.
+     */
+    String name() default "";
+    /**
+     * Displayed description.
+     */
     String description() default "no description";
+
+    /**
+     * You can set the type of data that can be entered by the user in the command argument.
+     *
+     * Auto-cast to ApplicationCommandOption.Type.ATTACHMENT is not supported use Snowflake for parameter type.
+     */
     ApplicationCommandOption.Type type() default ApplicationCommandOption.Type.STRING;
+    /**
+     * If you do not include this, then a String type argument will always come in handy in your method.
+     */
     boolean isRequired() default false;
 }
