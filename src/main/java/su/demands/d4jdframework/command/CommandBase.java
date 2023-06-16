@@ -244,14 +244,14 @@ public abstract class CommandBase {
                     if (isGlobalCommand())
                         getClient().getApplicationService()
                                 .createGlobalApplicationCommand(getApplicationId(), greetCmdRequest)
-                                .doOnNext(cmd -> LOGGER.debug("Successfully registered Global SubCommands :: {} fore Command :: {}", handler.value(), alias))
-                                .doOnError(e -> LOGGER.error("Failed to register Global SubCommands :: {}", e.getMessage()))
+                                .doOnNext(cmd -> LOGGER.debug("Successfully registered Global SubCommand :: {} fore Command :: {}", handlerAlias, alias))
+                                .doOnError(e -> LOGGER.error("Failed to register Global SubCommand :: {} ERROR :: {}", handlerAlias, e.getMessage()))
                                 .subscribe();
                     else
                         getClient().getApplicationService()
                                 .createGuildApplicationCommand(getApplicationId(), getGuildId(), greetCmdRequest)
                                 .doOnNext(cmd -> LOGGER.debug("Successfully registered for Guild :: {} SubCommands :: {} fore Command :: {}", getGuildId(), handler.value(), alias))
-                                .doOnError(e -> LOGGER.error("Failed to register for Guild :: {} SubCommands :: {}", getGuildId(), e.getMessage()))
+                                .doOnError(e -> LOGGER.error("Failed to register for Guild :: {} SubCommand :: {} ERROR :: {}", getGuildId(), handlerAlias, e.getMessage()))
                                 .subscribe();
                 }
             }

@@ -60,13 +60,13 @@ public abstract class Command extends CommandBase {
                 client.getApplicationService()
                         .createGlobalApplicationCommand(getApplicationId(),greetCmdRequest)
                         .doOnNext(cmd -> LOGGER.debug("Successfully registered Global Command :: {}", cmd.name()))
-                        .doOnError(e -> LOGGER.error("Failed to register global commands :: {}", e.getMessage()))
+                        .doOnError(e -> LOGGER.error("Failed to register Global Command :: {} ERROR :: {}", alias, e.getMessage()))
                         .subscribe();
             } else {
                 client.getApplicationService()
                         .createGuildApplicationCommand(getApplicationId(),getGuildId(),greetCmdRequest)
                         .doOnNext(cmd -> LOGGER.debug("Successfully registered for Guild :: {} Command :: {}", getGuildId(), cmd.name()))
-                        .doOnError(e -> LOGGER.error("Failed to register global commands :: {}", e.getMessage()))
+                        .doOnError(e -> LOGGER.error("Failed to register for Guild :: {} Command :: {} ERROR :: {}", alias, getGuildId(), e.getMessage()))
                         .subscribe();
             }
         }
