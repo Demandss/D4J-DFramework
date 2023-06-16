@@ -129,7 +129,7 @@ public abstract class CommandBase {
                 String value = option.get().getValue().get().getRaw();
 
                 if (!commandArgument.isRequired()) {
-                    args.add(value);
+                    args.add(param.getType().cast(value));
                 } else {
                     Class<?> castType = param.getType();
                     if (param.getType().isPrimitive())
