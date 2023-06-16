@@ -122,13 +122,22 @@ public abstract class CommandBase {
             CommandArgument commandArgument = param.getAnnotation(CommandArgument.class);
             if (commandArgument == null) continue;
             String argName = commandArgument.name().equals("") ? param.getName() : commandArgument.name();
-            Optional<ApplicationCommandInteractionOption> option = options.stream().findFirst().filter(it -> it.getName().equals(argName));
-            if (option.isEmpty() || option.get().getValue().isEmpty()) {
+            ApplicationCommandInteractionOption option = null;
+
+            for (ApplicationCommandInteractionOption it : options)
+            {
+                if (it.getName().equals(argName)) {
+                    option = it;
+                    break;
+                }
+            }
+
+            if (option == null || option.getValue().isEmpty()) {
                 args.add(param.getType().cast(null));
             } else {
-                String value = option.get().getValue().get().getRaw();
+                String value = option.getValue().get().getRaw();
 
-                if (!commandArgument.isRequired()) {
+                if (param.getType() == String.class || !commandArgument.isRequired()) {
                     args.add(param.getType().cast(value));
                 } else {
                     Class<?> castType = param.getType();
