@@ -61,7 +61,7 @@ public abstract class Command extends CommandBase {
                     .addAllOptions(options)
                     .build();
 
-            if (isGlobalCommand()) {
+            if (guildId != 0) {
                 client.getApplicationService()
                         .createGlobalApplicationCommand(getApplicationId(),greetCmdRequest)
                         .doOnNext(cmd -> LOGGER.debug("Successfully registered Global Command :: {}", cmd.name()))
