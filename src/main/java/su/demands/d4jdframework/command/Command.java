@@ -26,6 +26,11 @@ import java.util.List;
 public abstract class Command extends CommandBase {
     private final Logger LOGGER = LoggerFactory.getLogger(Command.class);
 
+    public Command(@NotNull DiscordClient client, long guildId, String... aliases) {
+        this(client,aliases);
+        this.setGuildId(guildId);
+    }
+
     public Command(@NotNull DiscordClient client, String... aliases) {
         super(client, aliases);
 
