@@ -32,7 +32,6 @@ public abstract class Command extends CommandBase {
 
     public Command(@NotNull DiscordClient client, long guildId, String... aliases) {
         super(client, guildId, aliases);
-        setGuildId(guildId);
 
         GatewayDiscordClient gatewayClient = client.login().block();
 
@@ -61,7 +60,7 @@ public abstract class Command extends CommandBase {
                     .addAllOptions(options)
                     .build();
 
-            if (guildId != 0) {
+            if (isGlobalCommand()) {
                 client.getApplicationService()
                         .createGlobalApplicationCommand(getApplicationId(),greetCmdRequest)
                         .doOnNext(cmd -> LOGGER.debug("Successfully registered Global Command :: {}", cmd.name()))
