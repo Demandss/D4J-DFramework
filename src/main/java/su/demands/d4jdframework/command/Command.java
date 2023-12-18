@@ -32,6 +32,7 @@ public abstract class Command extends CommandBase {
 
     public Command(@NotNull DiscordClient client, long guildId, String... aliases) {
         super(client, guildId, aliases);
+        setGuildId(guildId);
 
         GatewayDiscordClient gatewayClient = client.login().block();
 

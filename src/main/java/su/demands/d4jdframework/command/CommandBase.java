@@ -66,7 +66,7 @@ public abstract class CommandBase {
     }
 
     public boolean isGlobalCommand() {
-        return getGuildId() != 0;
+        return guildId != 0;
     }
 
     protected DiscordClient getClient() {
