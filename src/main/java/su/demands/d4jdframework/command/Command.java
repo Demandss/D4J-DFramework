@@ -10,7 +10,6 @@ import discord4j.core.object.entity.User;
 import discord4j.core.object.entity.channel.Channel;
 import discord4j.discordjson.json.ApplicationCommandOptionData;
 import discord4j.discordjson.json.ApplicationCommandRequest;
-import lombok.val;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +26,8 @@ import java.util.List;
 public abstract class Command extends CommandBase {
     private final Logger LOGGER = LoggerFactory.getLogger(Command.class);
 
-    public Command(@NotNull DiscordClient client, String label, String... aliases) {
-        super(client, label, aliases);
+    public Command(@NotNull DiscordClient client, String... aliases) {
+        super(client, aliases);
 
         GatewayDiscordClient gatewayClient = client.login().block();
 
@@ -42,7 +41,7 @@ public abstract class Command extends CommandBase {
                 CommandArgument argumentHandler = param.getAnnotation(CommandArgument.class);
                 if (argumentHandler == null) continue;
                 options.add(ApplicationCommandOptionData.builder()
-                        .name(argumentHandler.name().equals("") ? param.getName() : argumentHandler.name())
+                        .name(argumentHandler.name().isEmpty() ? param.getName() : argumentHandler.name())
                         .description(argumentHandler.description())
                         .type(argumentHandler.type().getValue())
                         .required(argumentHandler.isRequired())
@@ -50,7 +49,7 @@ public abstract class Command extends CommandBase {
             }
         }
 
-        for (val alias : getAliases()) {
+        for (var alias : getAliases()) {
             ApplicationCommandRequest greetCmdRequest = ApplicationCommandRequest.builder()
                     .name(alias)
                     .description(getDescription())

@@ -12,7 +12,6 @@ import discord4j.discordjson.json.ApplicationCommandRequest;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import lombok.val;
 import org.jetbrains.annotations.NotNull;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
@@ -49,24 +48,24 @@ public abstract class CommandBase {
 
     @Getter
     @Setter
-    private boolean isGlobalCommand = true;
-
-    @Getter
-    @Setter
     private long guildId;
 
     @Getter
     private TypeParserBuilder typeParser = TypeParser.newBuilder();
 
-    public CommandBase(@NotNull DiscordClient client, String label, String... aliases) {
+    /*public CommandBase(@NotNull DiscordClient client, String label, String... aliases) {
         this(client, toArray(label, aliases));
-    }
+    }*/
 
-    public CommandBase(@NotNull DiscordClient client, String[] aliases) {
+    public CommandBase(@NotNull DiscordClient client, String... aliases) {
         this.aliases = aliases;
         this.client = client;
         applicationId = Objects.requireNonNull(getClient().getApplicationId().block());
         loadHandle();
+    }
+
+    public boolean isGlobalCommand() {
+        return getGuildId() != 0;
     }
 
     protected DiscordClient getClient() {
@@ -83,7 +82,7 @@ public abstract class CommandBase {
 
         options.forEach(option -> {
             if (option.getType() == ApplicationCommandOption.Type.SUB_COMMAND) {
-                val subcommand = subcommands.get(option.getName());
+                var subcommand = subcommands.get(option.getName());
                 if (subcommand != null) {
                     handle.set(subcommand);
                 }
@@ -100,7 +99,7 @@ public abstract class CommandBase {
         String[] result = new String[aliases.length + 1];
         result[0] = label;
         int index = 1;
-        for (val alias : aliases) {
+        for (var alias : aliases) {
             result[index] = alias;
             index++;
         }
@@ -191,7 +190,7 @@ public abstract class CommandBase {
         if (subcommands.containsValue(subcommand)) {
             throw new IllegalStateException("subcommand is already registered");
         }
-        for (val alias : subcommand.getAliases()) {
+        for (var alias : subcommand.getAliases()) {
             subcommands.put(alias.toLowerCase(), subcommand);
         }
     }
@@ -221,7 +220,7 @@ public abstract class CommandBase {
                 handle.setDescription(handler.description());
             }
 
-            for (val alias : getAliases()) {
+            for (var alias : getAliases()) {
 
                 List<ApplicationCommandOptionData> options = new ArrayList<>();
 
@@ -237,7 +236,7 @@ public abstract class CommandBase {
                             .build());
                 }
 
-                for (val handlerAlias : handler.value())
+                for (var handlerAlias : handler.value())
                 {
                     ApplicationCommandRequest greetCmdRequest = ApplicationCommandRequest.builder()
                             .name(alias)
