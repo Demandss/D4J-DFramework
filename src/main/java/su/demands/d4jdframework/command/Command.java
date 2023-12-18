@@ -26,13 +26,12 @@ import java.util.List;
 public abstract class Command extends CommandBase {
     private final Logger LOGGER = LoggerFactory.getLogger(Command.class);
 
-    public Command(@NotNull DiscordClient client, long guildId, String... aliases) {
-        this(client,aliases);
-        this.setGuildId(guildId);
+    public Command(@NotNull DiscordClient client, String... aliases) {
+        this(client,0,aliases);
     }
 
-    public Command(@NotNull DiscordClient client, String... aliases) {
-        super(client, aliases);
+    public Command(@NotNull DiscordClient client, long guildId, String... aliases) {
+        super(client, guildId, aliases);
 
         GatewayDiscordClient gatewayClient = client.login().block();
 
@@ -71,7 +70,7 @@ public abstract class Command extends CommandBase {
                 client.getApplicationService()
                         .createGuildApplicationCommand(getApplicationId(),getGuildId(),greetCmdRequest)
                         .doOnNext(cmd -> LOGGER.debug("Successfully registered for Guild :: {} Command :: {}", getGuildId(), cmd.name()))
-                        .doOnError(e -> LOGGER.error("Failed to register for Guild :: {} Command :: {} ERROR :: {}", alias, getGuildId(), e.getMessage()))
+                        .doOnError(e -> LOGGER.error("Failed to register for Guild :: {} Command :: {} ERROR :: {}", getGuildId(), alias, e.getMessage()))
                         .subscribe();
             }
         }

@@ -57,9 +57,10 @@ public abstract class CommandBase {
         this(client, toArray(label, aliases));
     }*/
 
-    public CommandBase(@NotNull DiscordClient client, String... aliases) {
+    public CommandBase(@NotNull DiscordClient client, long guildId, String... aliases) {
         this.aliases = aliases;
         this.client = client;
+        this.guildId = guildId;
         applicationId = Objects.requireNonNull(getClient().getApplicationId().block());
         loadHandle();
     }
@@ -206,7 +207,7 @@ public abstract class CommandBase {
 
             boolean useArguments = parameters.length > 1;
 
-            CommandBase handle = new CommandBase(getClient(), handler.value()) {
+            CommandBase handle = new CommandBase(getClient(), guildId, handler.value()) {
                 @SneakyThrows
                 @CommandHandler
                 public Publisher<?> execute(Executor executor, Object[] args) {
